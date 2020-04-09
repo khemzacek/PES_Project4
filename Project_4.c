@@ -41,6 +41,7 @@
 #include "fsl_debug_console.h"
 /* TODO: insert other include files here. */
 #include <math.h>
+#include <State_Machines.h>
 #include "LED_control.h"
 #include "i2c.h"
 #include "mma8451.h"
@@ -48,7 +49,6 @@
 #include "process_display.h"
 #include "SysTick_timer.h"
 #include "slider_polling.h"
-#include "State_Machine_1.h"
 
 /* TODO: insert other definitions and declarations here. */
 
@@ -75,6 +75,8 @@ int main(void) {
     	end_flag = 1;
     }
 
+    printf("System initialized\n");
+
     enum states current_state = Read_XYZ_Acc;
     enum states next_state = Read_XYZ_Acc;
 
@@ -82,10 +84,11 @@ int main(void) {
     	LED_on(green);
 
     	if(machine == 1){
+    		printf("State Machine 1\n");
     		next_state = State_Machine_1(current_state);
     	}else if(machine == 2){
     		printf("State Machine 2\n");
-    		machine = 1;
+    		next_state = State_Machine_2(current_state);
     	}else{
     		printf("ERROR: state machine number invalid\n");
     		machine = 1;
@@ -96,6 +99,6 @@ int main(void) {
     }
 
     //End flag asserted by one of the state machines -> end program
-    printf("End");
+    printf("Program End");
     return 0 ;
 }
